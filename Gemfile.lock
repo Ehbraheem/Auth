@@ -52,7 +52,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mongoid (~> 7.0)
+  mongoid (~> 7.0, >= 7.0.5)
   rspec (~> 3.9, >= 3.9.0)
   sinatra (~> 2.0, >= 2.0.7)
 
