@@ -24,6 +24,8 @@ GEM
     rack (2.0.8)
     rack-protection (2.0.7)
       rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -53,6 +55,7 @@ PLATFORMS
 
 DEPENDENCIES
   mongoid (~> 7.0, >= 7.0.5)
+  rack-test (~> 1.1, >= 1.1.0)
   rspec (~> 3.9, >= 3.9.0)
   sinatra (~> 2.0, >= 2.0.7)
 
