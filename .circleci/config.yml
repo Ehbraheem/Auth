@@ -31,8 +31,8 @@ jobs:
       - run: # Install Ruby dependencies
           name: Bundle Install
           command: |
-          bundle config set deployment 'true'
-          bundle config set path 'vendor/bundle'
+            bundle config set deployment 'true'
+            bundle config set path 'vendor/bundle'
 
       - run: # Install Ruby dependencies
           name: Bundle Install
