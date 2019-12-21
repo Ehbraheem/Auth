@@ -30,12 +30,13 @@ jobs:
 
       - run: # Install Ruby dependencies
           name: Bundle Install
-          command: bundle config set deployment 'true'
-
+          command: |
+          bundle config set deployment 'true'
+          bundle config set path 'vendor/bundle'
 
       - run: # Install Ruby dependencies
           name: Bundle Install
-          command: bundle check --path vendor/bundle || bundle install 
+          command: bundle check || bundle install 
 
       # Store bundle cache for Ruby dependencies
       - save_cache:
