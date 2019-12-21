@@ -11,6 +11,6 @@ RSpec.describe "Auth Api" do
     puts payload
     expect(payload).to have_key "welcome"
     expect(payload["welcome"]).to_not be_nil
-    expect(payload["welcome"]).to eq "This is an authn/authz service"
+    expect(payload["welcome"]).to eq "This is an authn/authz service."
   end
 end
