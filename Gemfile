@@ -13,4 +13,6 @@ group :test do
 
   gem "rack-test", "~> 1.1", ">=1.1.0"
   gem "rspec_junit_formatter", "~> 0.4.1", ">= 0.4.1"
+  gem "rubocop-junit_formatter", "~> 0.2", ">= 0.2"
+  gem "rubocop", "~> 0.78", ">= 0.78.0"
 end
