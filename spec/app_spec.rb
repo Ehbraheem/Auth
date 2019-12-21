@@ -8,7 +8,6 @@ RSpec.describe "Auth Api" do
   it "returns correct response body" do
     payload = parsed_body
 
-    puts payload
     expect(payload).to have_key "welcome"
     expect(payload["welcome"]).to_not be_nil
     expect(payload["welcome"]).to eq "This is an authn/authz service."
