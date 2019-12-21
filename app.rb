@@ -4,6 +4,6 @@ require_relative "./config/environment" # db configurations
 
 class AuthApi < Sinatra::Base
   get "/" do
-    "Hello World"
+    { welcome: "This is an authn/authz service." }.to_json
   end
 end
