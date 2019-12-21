@@ -17,3 +17,5 @@ group :test do
 end
 
 gem 'dotenv', '~> 2.7', '>= 2.7.5'
+
+gem 'puma', '~> 4.3', '>= 4.3.1'
