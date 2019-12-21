@@ -58,13 +58,13 @@ jobs:
                               --format progress \
                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
-      # - run:
-      #     name: Run rubocop in parallel
-      #     command: |  
-      #       bundle exec rubocop --format RuboCop::Formatter::JUnitFormatter \
-      #                         --out test_results/rspec.xml \
-      #                         --format progress \
-      #                         $(circleci tests glob "*.rb" | circleci tests split --split-by=timings)
+      - run:
+          name: Run rubocop in parallel
+          command: |  
+            bundle exec rubocop --format RuboCop::Formatter::JUnitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "*.rb" | circleci tests split --split-by=timings)
 
       - store_test_results: 
           path: test_results
