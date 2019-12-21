@@ -1,0 +1,7 @@
+require:
+  - rubocop/formatter/junit_formatter
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'bin/**/*'
