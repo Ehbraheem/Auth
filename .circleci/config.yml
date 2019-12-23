@@ -1,0 +1,71 @@
+version: 2 
+jobs: 
+  build: 
+    # parallelism: 3 
+    docker: 
+      - image: circleci/ruby:2.6.5-node 
+        environment: 
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: 127.0.0.1
+          PGUSER: auth
+          RACK_ENV: test
+      - image: circleci/mongo:4.2.1-ram
+
+    steps: 
+      - checkout 
+
+      # Upgrade version of bundler
+      - run:
+          name: Upgrade bundler
+          command: gem i bundler --pre
+
+      # Restore bundle cache
+      # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+      - restore_cache:
+          keys:
+            - auth-v0-{{ checksum "Gemfile.lock" }}
+            - auth-v0-
+
+      - run: # Install Ruby dependencies
+          name: Bundle Install
+          command: |
+            bundle config set deployment 'true'
+            bundle config set path 'vendor/bundle'
+
+      - run: # Install Ruby dependencies
+          name: Bundle Install
+          command: bundle check || bundle install 
+
+      # Store bundle cache for Ruby dependencies
+      - save_cache:
+          key: auth-v0-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Wait for MongoDB
+          command: dockerize -wait tcp://localhost:27017 -timeout 1m
+
+      - run:
+          name: Run rspec in parallel
+          command: |
+            export OPENSSL_CONF=$WORKSPACE/openssl.cnf   
+            bundle exec rspec --profile 10 \
+                              --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+
+      - run:
+          name: Run rubocop in parallel
+          command: |  
+            bundle exec rubocop --format RuboCop::Formatter::JUnitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "*.rb" | circleci tests split --split-by=timings)
+
+      - store_test_results: 
+          path: test_results
+      
