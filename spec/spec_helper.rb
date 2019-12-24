@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'rack/test'
-require 'factory_bot'
-require 'sinatra/base'
-require 'coveralls'
+ENV['RACK_ENV'] = 'test'
 
+require_relative File.expand_path '../config/environment', __dir__
 require_relative File.expand_path '../app', __dir__
 require_relative File.expand_path 'support/database_cleaners', __dir__
 
