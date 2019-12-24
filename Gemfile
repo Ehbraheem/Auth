@@ -9,6 +9,7 @@ gem 'sinatra', '~>2.0', '>=2.0.7'
 gem 'mongoid', '~> 7.0', '>=7.0.5'
 
 group :test do
+  gem 'coveralls', '~> 0.8', '>= 0.8.23'
   gem 'database_cleaner', '~> 1.7', '>= 1.7.0'
   gem 'factory_bot', '~> 5.1', '>= 5.1.1'
   gem 'faker', '~> 2.9', '>= 2.9.0'

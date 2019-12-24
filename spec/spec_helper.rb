@@ -3,11 +3,14 @@
 require 'rack/test'
 require 'factory_bot'
 require 'sinatra/base'
+require 'coveralls'
 
 require_relative File.expand_path '../app', __dir__
 require_relative File.expand_path 'support/database_cleaners', __dir__
 
 ENV['RACK_ENV'] = 'test'
+
+Coveralls.wear!
 
 module RSpecMixin
   include Rack::Test::Methods
