@@ -5,8 +5,10 @@ SCRIPT_DIR="../../scripts"
 
 echo "Installing hooks..."
 # below commands will symlink our pre-(commit, push) scripts to git
-ln -s "${SCRIPT_DIR}/pre-commit.bash $GIT_DIR/hooks/pre-commit
-ln -s "${SCRIPT_DIR}/pre-push.bash $GIT_DIR/hooks/pre-push
+#ln -s "${SCRIPT_DIR}/pre-commit.bash $GIT_DIR/hooks/pre-commit
+#ln -s "${SCRIPT_DIR}/pre-push.bash $GIT_DIR/hooks/pre-push
+ln -s ../../scripts/pre-commit.bash $GIT_DIR/hooks/pre-commit
+ln -s ../../scripts/pre-push.bash $GIT_DIR/hooks/pre-push
 
 echo "Hooks installed successfully"
 
