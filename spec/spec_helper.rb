@@ -2,6 +2,7 @@
 
 require 'rack/test'
 require 'factory_bot'
+require 'sinatra/base'
 
 require_relative File.expand_path '../app', __dir__
 require_relative File.expand_path 'support/database_cleaners', __dir__
