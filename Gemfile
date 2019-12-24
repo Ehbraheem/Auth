@@ -14,6 +14,7 @@ group :test do
   gem 'rspec_junit_formatter', '~> 0.4.1', '>= 0.4.1'
   gem 'rubocop', '~> 0.78', '>= 0.78.0'
   gem 'rubocop-junit_formatter', '~> 0.2', '>= 0.2'
+  gem 'database_cleaner', '~> 1.7', '>= 1.7.0'
 end
 
 gem 'dotenv', '~> 2.7', '>= 2.7.5'
