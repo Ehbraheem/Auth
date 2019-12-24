@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-Sinatra::Base.configure :production, :development, :test do
-  # we are running this method from top-level
+require 'rubygems'
+require 'bundler/setup'
 
-  # Bootstrap MongoDB connection
-  Mongoid.load! './config/mongoid.yml'
-end
+ENV['RACK_ENV'] ||= 'development'
+
+Bundler.require :default, ENV['RACK_ENV'].to_sym
+
+require_relative './initializers/mongoid'
