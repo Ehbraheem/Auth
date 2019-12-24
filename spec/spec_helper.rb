@@ -3,6 +3,7 @@
 require 'rack/test'
 
 require_relative File.expand_path '../app', __dir__
+require_relative File.expand_path 'support/database_cleaner', __dir__
 
 ENV['RACK_ENV'] = 'test'
 
