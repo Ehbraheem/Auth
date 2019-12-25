@@ -2,11 +2,11 @@
 
 RSpec.describe Role, type: :model do
   context 'Basic CRUD' do
-    let!(:roles) { FactoryBot.create_list :role, 10 }
-    let(:object) { FactoryBot.attributes_for :role }
+    let!(:roles) { create_list :role, 10 }
+    let(:object) { attributes_for :role }
 
     it 'can create valid Role' do
-      obj = FactoryBot.create :role
+      obj = create :role
       expect(obj).to be_persisted
     end
 
