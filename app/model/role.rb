@@ -10,7 +10,7 @@ class Role
   field :uuid, type: String
   field :parent, type: BSON::ObjectId
 
-  before_save do |doc|
-    self.parent = self.parent.id if self.parent?
+  before_save do |_doc|
+    self.parent = parent.id if parent?
   end
 end
