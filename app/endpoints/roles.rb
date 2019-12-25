@@ -1,0 +1,3 @@
+class Roles < AuthApi
+  
+end
