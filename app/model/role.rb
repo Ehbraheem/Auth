@@ -3,11 +3,10 @@
 # #
 class Role
   include Mongoid::Document
+  Mongoid::QueryCache.enabled = true
 
-  field :_id,  type: String, default: -> { id }
-	field :id, type: String
   field :name, type: String
   field :description, type: String
   field :uuid, type: String
-  field :parent, type: self.class
+  field :parent, type: Role
 end
