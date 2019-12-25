@@ -2,7 +2,7 @@
 
 RSpec.describe Role, type: :model do
   context 'Basic CRUD' do
-    let(:roles) { FactoryBot.create_list :role, 10 }
+    let!(:roles) { FactoryBot.create_list :role, 10 }
     let(:object) { FactoryBot.attributes_for :role }
 
     it 'can create valid Role' do
@@ -11,7 +11,6 @@ RSpec.describe Role, type: :model do
     end
 
     it 'update existing Role' do
-      roles
       obj = Role.first
       expect(obj.update(object)).to be true
     end
@@ -25,7 +24,7 @@ RSpec.describe Role, type: :model do
     it 'can delete valid Role' do
       obj = Role.first
       expect(Role.find(obj.id)).to be_a_kind_of Role
-      Role.destroy(obj.id)
+      Role.find(obj.id).destroy
       expect do
         Role.find(obj.id)
       end    .to raise_exception Mongoid::Errors::DocumentNotFound
