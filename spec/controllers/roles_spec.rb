@@ -80,7 +80,7 @@ RSpec.describe Roles, type: :controller do
       allow(Role).to receive(:find).with('sdvsvsADGFsbCvs')
                                    .and_return(nil)
       allow(role).to receive(:update).with(params)
-                                     .and_return(role.merge(params))
+                                     .and_return(role.assign_attributes(params))
     end
 
     it 'updated role info' do
