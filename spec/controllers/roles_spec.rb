@@ -100,8 +100,20 @@ RSpec.describe Roles, type: :controller do
     end
   end
 
-  context 'DELETE #destroy' do
-    it 'deleted role'
+  xcontext 'DELETE #destroy' do
+    let(:role) { build_stubbed(:role) }
+
+    before(:each) do
+      # Role.stub_chain(:find, :update).with(role.id).with(params).and_return(role.merge(params))
+      allow(Role).to receive(:find).with(role.id).and_return(role)
+      allow(Role).to receive(:find).with('sdvsvsADGFsbCvs').and_return(nil)
+      allow(role).to receive(:destroy).and_return(role.merge(nil)
+    end
+
+    it 'deleted role' do
+      delete "/roles/#{role.id}"
+
+    end
     it 'fails because no role is associated with id'
   end
 end
