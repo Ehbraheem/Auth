@@ -1,8 +1,30 @@
 RSpec.describe Roles, type: :controller do
 
   context 'GET #index' do
-    it 'success and renders all roles'
-    it 'success but no roles is in system'
+    let(:roles) { build_stubbed_list(:role, 5) }
+    
+    it 'success and renders all roles' do
+      allow(Role).to receive(:all).and_return(roles)
+
+      get '/roles'
+
+      payload = parsed_body
+      
+      expect(payload).to respond_to :length
+      expect(payload.length).to eq 5
+      expect(payload).to match_array roles
+    end
+
+    it 'success but no roles is in system' do
+      allow(Role).to receive(:all).and_return([])
+
+      get '/roles'
+
+      payload = parsed_body
+      
+      expect(payload).to respond_to :length
+      expect(payload.length).to eq 0
+    end
   end
 
   context 'GET #show' do
