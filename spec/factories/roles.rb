@@ -7,7 +7,7 @@ FactoryBot.define do
     uuid { Faker::Internet.uuid }
 
     trait :with_parent do
-      parent { association self }
+      association :parent, factory: :role, strategy: :create
     end
   end
 end
