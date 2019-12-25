@@ -57,7 +57,14 @@ RSpec.describe Roles, type: :controller do
   end
 
   context 'POST #create' do
-    it 'creates a new role'
+    it 'creates a new role' do
+      params = attributes_for :role
+      stubbed = params.merge(id: 'q3q2e')
+
+      allow(Role).to receive(:create).with(params).and_return(stubbed)
+
+      expect(post '/roles', params: { role: params }).to eq stubbed
+    end
   end
 
   context 'PUT #update' do
