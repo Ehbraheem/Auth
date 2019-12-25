@@ -34,6 +34,7 @@ RSpec.describe Roles, type: :controller do
       allow(Role).to receive(:find).with(role.id).and_return(role)
       allow(Role).to receive(:find).with('sdvsvsADGFsbCvs').and_return(nil)
     end
+
     it 'success and renders role' do
 
       get "/roles/#{role.id}"
@@ -68,8 +69,35 @@ RSpec.describe Roles, type: :controller do
   end
 
   context 'PUT #update' do
-    it 'updated role info'
-    it 'fails because no role is associated with id'
+    let(:role) { build_stubbed(:role) }
+    let(:params) { attributes_for(:role) }
+
+    before(:each) do
+      # Role.stub_chain(:find, :update).with(role.id).with(params).and_return(role.merge(params))
+      allow(Role).to receive(:find).with(role.id).and_return(role)
+      allow(Role).to receive(:find).with('sdvsvsADGFsbCvs').and_return(nil)
+      allow(role).to receive(:update).with(params).and_return(role.merge(params))
+    end
+
+    it 'updated role info' do
+      put "/roles/#{role.id}", params: { role: params }
+
+      payload = parsed_body
+      
+      params.each do |key, value|
+        expect(payload).to have_key key
+        expect(payload[key]).to_not be_nil
+        expect(payload[key]).to eq value
+      end
+    end
+
+    it 'fails because no role is associated with id' do
+      put "/roles/sdvsvsADGFsbCvs", params: { role: params }
+
+      payload = parsed_body
+
+      expect(payload).to be_nil
+    end
   end
 
   context 'DELETE #destroy' do
