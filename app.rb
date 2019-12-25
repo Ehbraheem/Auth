@@ -31,4 +31,9 @@ module Auth
       app.call(env)
     end
   end
+
+  def self.inherited(sublass)
+    super
+    use sublass 
+  end
 end
