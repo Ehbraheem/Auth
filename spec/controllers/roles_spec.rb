@@ -66,11 +66,17 @@ RSpec.describe Auth::Api::Roles, type: :controller do
   context 'POST #create' do
     it 'creates a new role' do
       params = attributes_for :role
-      stubbed = params.merge(id: 'q3q2e')
+      stubbed = build_stubbed(:role, params)
 
       allow(Role).to receive(:create).with(params).and_return(stubbed)
 
-      expect(post('/roles', params: { role: params })).to eq stubbed
+      post '/roles', { role: params }
+
+      payload = parsed_body
+      roles_attr.each do |key|
+        expect(payload).to have_key key.to_s
+        expect(payload[key.to_s]).to eq stubbed[key]
+      end
     end
   end
 
@@ -90,7 +96,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     end
 
     it 'updated role info' do
-      put "/roles/#{role.id}", params: { role: params }
+      put "/roles/#{role.id}", { role: params }
 
       payload = parsed_body
 
@@ -102,7 +108,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      put '/roles/sdvsvsADGFsbCvs', params: { role: params }
+      put '/roles/sdvsvsADGFsbCvs', { role: params }
 
       payload = parsed_body
 
