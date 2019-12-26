@@ -70,7 +70,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
       allow(Role).to receive(:create).with(params).and_return(stubbed)
 
-      post '/roles', { role: params }
+      post '/roles', role: params
 
       payload = parsed_body
       roles_attr.each do |key|
@@ -90,8 +90,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
         role
       end
 
-
-      put "/roles/#{role.id}", { role: params }
+      put "/roles/#{role.id}", role: params
 
       payload = parsed_body
       puts payload
@@ -104,9 +103,9 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      allow(Role).to receive_message_chain(:find, :update).with('sdvsvsADGFsbCvs').with(params).and_return(nil)
+      allow(Role).to receive_message_chain(:find, :update).with('xx').with(params) { nil }
 
-      put '/roles/sdvsvsADGFsbCvs', { role: params }
+      put '/roles/xx', role: params
 
       payload = parsed_body
       puts payload
