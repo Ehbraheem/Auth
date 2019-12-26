@@ -93,7 +93,6 @@ RSpec.describe Auth::Api::Roles, type: :controller do
       put "/roles/#{role.id}", role: params
 
       payload = parsed_body
-      puts payload
 
       params.each do |key, value|
         expect(payload).to have_key key.to_s
@@ -108,29 +107,29 @@ RSpec.describe Auth::Api::Roles, type: :controller do
       put '/roles/xx', role: params
 
       payload = parsed_body
-      puts payload
 
       expect(payload).to be_nil
     end
   end
 
-  xcontext 'DELETE #destroy' do
+  context 'DELETE #destroy' do
     let(:role) { build_stubbed(:role) }
 
-    before(:each) do
-      # Role.stub_chain(:find, :update).with(role.id)
-      # .with(params).and_return(role.merge(params))
-      allow(Role).to receive(:find).with(role.id)
-                                   .and_return(role)
-      allow(Role).to receive(:find).with('sdvsvsADGFsbCvs')
-                                   .and_return(nil)
-      allow(role).to receive(:destroy)
-        .and_return(role.merge(nil))
-    end
-
     it 'deleted role' do
-      delete "/roles/#{role.id}"
+      allow(Role).to receive(:find).with(role.id) { role }
+      allow(role).to receive(:destroy)
+
+      expect {
+        delete "/roles/#{role.id}"
+      }.to_not raise_error
+
     end
-    it 'fails because no role is associated with id'
+    it 'fails because no role is associated with id' do
+      allow(Role).to receive(:find).with('xx').and_raise(Mongoid::Errors::DocumentNotFound.new(Role, 'xx'))
+      
+      expect {
+        delete "/roles/xx"
+      }.to raise_error Mongoid::Errors::DocumentNotFound
+    end
   end
 end
