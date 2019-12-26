@@ -84,33 +84,32 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     let(:role) { build_stubbed(:role) }
     let(:params) { attributes_for(:role) }
 
-    before(:each) do
-      # Role.stub_chain(:find, :update).with(role.id)
-      # .with(params).and_return(role.merge(params))
-      allow(Role).to receive(:find).with(role.id)
-                                   .and_return(role)
-      allow(Role).to receive(:find).with('sdvsvsADGFsbCvs')
-                                   .and_return(nil)
-      allow(role).to receive(:update).with(params)
-                                     .and_return(role.assign_attributes(params))
-    end
-
     it 'updated role info' do
+      allow(Role).to receive_message_chain(:find, :update).with(role.id).with(params) do
+        role.assign_attributes(params)
+        role
+      end
+
+
       put "/roles/#{role.id}", { role: params }
 
       payload = parsed_body
+      puts payload
 
       params.each do |key, value|
-        expect(payload).to have_key key
-        expect(payload[key]).to_not be_nil
-        expect(payload[key]).to eq value
+        expect(payload).to have_key key.to_s
+        expect(payload[key.to_s]).to_not be_nil
+        expect(payload[key.to_s]).to eq value
       end
     end
 
     it 'fails because no role is associated with id' do
+      allow(Role).to receive_message_chain(:find, :update).with('sdvsvsADGFsbCvs').with(params).and_return(nil)
+
       put '/roles/sdvsvsADGFsbCvs', { role: params }
 
       payload = parsed_body
+      puts payload
 
       expect(payload).to be_nil
     end
