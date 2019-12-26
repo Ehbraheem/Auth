@@ -11,6 +11,11 @@ module Auth
       get '/' do
         Role.all.to_json
       end
+
+      get '/:id' do |id|
+        Role.find(id).to_json
+      end
+
     end
   end
 end
