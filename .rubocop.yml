@@ -5,3 +5,16 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'bin/**/*'
+
+Naming/FileName:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 90
+  IgnoredPatterns: ['(\A|\s)#']
+
+# TODO: Remove later
+Metrics/BlockLength:
+  Enabled: false
+  # Max: 90
+  
