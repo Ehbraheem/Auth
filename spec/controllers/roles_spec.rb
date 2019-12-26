@@ -48,10 +48,9 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
       payload = parsed_body
 
-      role.each do |key, value|
-        expect(payload).to have_key key
-        expect(payload[key]).to_not be_nil
-        expect(payload[key]).to eq value
+      roles_attr.each do |key|
+        expect(payload).to have_key key.to_s
+        expect(payload[key.to_s]).to eq role[key]
       end
     end
 
