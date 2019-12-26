@@ -38,7 +38,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
   context 'GET #show' do
     let(:role) { build_stubbed(:role) }
 
-    before(:each) do
+    before(:example) do
       allow(Role).to receive(:find).with(role.id).and_return(role)
       allow(Role).to receive(:find).with('sdvsvsADGFsbCvs').and_return(nil)
     end
