@@ -23,6 +23,11 @@ module Auth
       put '/:id' do |id|
         Role.find(id).update(params['role']).to_json
       end
+
+      delete '/:id' do |id|
+        Role.find(id).destroy
+      end
+      
     end
   end
 end
