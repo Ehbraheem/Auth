@@ -20,6 +20,9 @@ module Auth
         Role.create(params['role']).to_json
       end
 
+      put '/:id' do |id|
+        Role.find(id).update(params['role']).to_json
+      end
     end
   end
 end
