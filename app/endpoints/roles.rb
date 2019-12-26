@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
-class Roles < AuthApi
+#  #
+module Auth
+  #  #
+  module Api
+    #  #
+    class Roles < Sinatra::Base
+      include Auth::Endpoint
 
-  get '/roles' do
-    # Role.all.to_json
+      get '/' do
+        Role.all.to_json
+      end
+    end
   end
 end
