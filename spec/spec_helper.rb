@@ -14,7 +14,7 @@ module RSpecMixin
   include Rack::Test::Methods
 
   def app
-    AuthApi
+    Auth::App.new
   end
 end
 
