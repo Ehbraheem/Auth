@@ -16,6 +16,10 @@ module Auth
         Role.find(id).to_json
       end
 
+      post '/' do
+        Role.create(params['role']).to_json
+      end
+
     end
   end
 end
