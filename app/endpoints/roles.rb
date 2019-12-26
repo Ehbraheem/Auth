@@ -27,7 +27,6 @@ module Auth
       delete '/:id' do |id|
         Role.find(id).destroy
       end
-      
     end
   end
 end

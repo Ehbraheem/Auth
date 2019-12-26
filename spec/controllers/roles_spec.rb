@@ -119,17 +119,19 @@ RSpec.describe Auth::Api::Roles, type: :controller do
       allow(Role).to receive(:find).with(role.id) { role }
       allow(role).to receive(:destroy)
 
-      expect {
+      expect do
         delete "/roles/#{role.id}"
-      }.to_not raise_error
-
+      end.to_not raise_error
     end
+
     it 'fails because no role is associated with id' do
-      allow(Role).to receive(:find).with('xx').and_raise(Mongoid::Errors::DocumentNotFound.new(Role, 'xx'))
-      
-      expect {
-        delete "/roles/xx"
-      }.to raise_error Mongoid::Errors::DocumentNotFound
+      allow(Role).to receive(:find).with('xx').and_raise(
+        Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
+      )
+
+      expect do
+        delete '/roles/xx'
+      end.to raise_error Mongoid::Errors::DocumentNotFound
     end
   end
 end
