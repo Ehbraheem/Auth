@@ -11,7 +11,3 @@ require_relative './initializers/mongoid'
 
 # Makes base app class available to subclasses
 require_relative '../app'
-
-Dir[File.join(__dir__, '../app/**/*.rb')].each do |f|
-  require_relative f unless f[%r{^\./spec/}]
-end
