@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe Roles, type: :controller do
+def roles_attr
+  %i[name uuid description parent]
+end
+
+RSpec.describe Auth::Api::Roles, type: :controller do
   context 'GET #index' do
     let(:roles) { build_stubbed_list(:role, 5) }
 
@@ -13,7 +17,10 @@ RSpec.describe Roles, type: :controller do
 
       expect(payload).to respond_to :length
       expect(payload.length).to eq 5
-      expect(payload).to match_array roles
+      expect(payload.map { |f| f['name'] }).to eq(roles.map { |f| f[:name] })
+      roles_attr.each do |attr|
+        expect(payload.map { |e| e[attr.to_s] }).to match_array(roles.map { |e| e[attr] })
+      end
     end
 
     it 'success but no roles is in system' do
