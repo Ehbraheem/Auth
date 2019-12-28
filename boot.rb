@@ -7,5 +7,4 @@ Encoding.default_internal = Encoding::UTF_8
 
 ENV['ROOT_PATH'] = __dir__
 
-require 'config/environment'
-require 'app'
+require_relative 'config/environment'

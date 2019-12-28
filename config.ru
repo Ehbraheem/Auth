@@ -2,4 +2,4 @@
 
 require_relative 'boot'
 
-run AuthApi
+run Auth::App.new
