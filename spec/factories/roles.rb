@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :role do
+  factory :role, class: Auth::App::Model::Role do
     name { Faker::Job.position }
     description { Faker::Lorem.paragraph }
     uuid { Faker::Internet.uuid }
