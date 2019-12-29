@@ -6,13 +6,16 @@ module Auth
   class App
     class Endpoint
       class Roles < Endpoint
+        before(%r{/\b(?=([-_a-z0-9]*)\b)\1}) do |id|
+          @role = role(id)
+        end
+
         get '/' do
           Auth::App::Model::Role.all.to_json
         end
 
-        get '/:id' do |id|
-          Auth::App::Render::Role.render Auth::App::Model::Role.find(id)
-          # Role.find(id).to_json
+        get '/:id' do
+          render @role
         end
 
         post '/' do
@@ -25,6 +28,16 @@ module Auth
 
         delete '/:id' do |id|
           Auth::App::Model::Role.find(id).destroy
+        end
+
+        private
+
+        def role(id)
+          Auth::App::Model::Role.find(id)
+        end
+
+        def render(data)
+          Auth::App::Render::Role.render data
         end
       end
     end
