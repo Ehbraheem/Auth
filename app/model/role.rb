@@ -4,8 +4,7 @@ require_relative '../model'
 
 module Auth
   class App
-    class Model
-      # #
+    module Model
       class Role < Base
         # Mongoid::QueryCache.enabled = true
         # store_in collection: name[/[^:]+$/].pluralize
