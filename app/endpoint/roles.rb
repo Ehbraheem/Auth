@@ -11,7 +11,8 @@ module Auth
         end
 
         get '/' do
-          Auth::App::Model::Role.all.to_json
+          @roles = Auth::App::Model::Role.all
+          render @roles
         end
 
         get '/:id' do
@@ -22,12 +23,13 @@ module Auth
           Auth::App::Model::Role.create(params['role']).to_json
         end
 
-        put '/:id' do |id|
-          Auth::App::Model::Role.find(id).update(params['role']).to_json
+        put '/:id' do
+          render @role if @role.update payload
+          # Auth::App::Model::Role.find(id).update(params['role']).to_json
         end
 
-        delete '/:id' do |id|
-          Auth::App::Model::Role.find(id).destroy
+        delete '/:id' do
+          @role.destroy
         end
 
         private
@@ -38,6 +40,10 @@ module Auth
 
         def render(data)
           Auth::App::Render::Role.render data
+        end
+
+        def payload
+          JSON.parse request.body.read
         end
       end
     end

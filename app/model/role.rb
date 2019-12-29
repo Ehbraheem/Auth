@@ -17,6 +17,17 @@ module Auth
         before_save do |_doc|
           self.parent = parent.id if parent?
         end
+
+        def to_hash
+          hash = {
+            id: id.to_s,
+            name: name,
+            description: description,
+            uuid: uuid
+          }
+          hash[:parent] = parent.to_s if parent?
+          hash
+        end
       end
     end
   end

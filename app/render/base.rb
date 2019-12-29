@@ -10,9 +10,10 @@ module Auth
     module Render
       class Base
         class << self
-          def render(hash)
+          def render(data)
+            data = data.respond_to?(:map) ? data.map(&:to_hash) : data.to_hash
             MultiJson.use :oj
-            MultiJson.dump hash
+            MultiJson.dump data
           end
         end
       end
