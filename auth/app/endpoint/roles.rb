@@ -14,21 +14,21 @@ module Auth
 
         get '/' do
           @roles = roles
-          render @roles
+          render resource: @roles
         end
 
         get '/:id' do
-          render @role if @role
+          render(resource: @role) if @role
         end
 
         post '/' do
           @role = build_role
           @role.save
-          render @role
+          render resource: @role, status: 201
         end
 
         put '/:id' do
-          render(@role) if @role.update(payload)
+          render(resource: @role, status: 204) if @role.update(payload)
         end
 
         delete '/:id' do

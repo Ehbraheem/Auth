@@ -8,9 +8,11 @@ module Auth
     module Render
       class Base
         class << self
-          def render(data)
-            data = data.respond_to?(:map) ? data.map(&:to_hash) : data.to_hash
-            Parser.dump data
+          def render(resource:, status: 200, headers: nil)
+            resource = resource.respond_to?(:map) ? resource.map(&:to_h) : resource.to_h
+            body = Parser.dump resource
+
+            [status, headers, body]
           end
         end
       end

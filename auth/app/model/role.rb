@@ -19,7 +19,7 @@ module Auth
           self.uuid = SecureRandom.uuid unless uuid?
         end
 
-        def to_hash
+        def to_h
           hash = {
             id: id.to_s,
             name: name,

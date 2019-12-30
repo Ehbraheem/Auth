@@ -6,11 +6,12 @@ module Auth
   class App
     module Render
       class Role < Base
-        def self.render(data)
-          nil unless data
-          # Not doing anything serious in the moment
-          # data = data.map(&:to_hash) if data.respond_to?(:map) || data
-          super
+        def self.render(resource:, status: 200, headers: nil)
+          if resource
+            super
+          else
+            [status, headers, resource]
+          end
         end
       end
     end
