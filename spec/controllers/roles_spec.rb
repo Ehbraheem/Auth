@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 def roles_attr
-  %i[name uuid description parent]
+  %i[name uuid description]
 end
 
-RSpec.describe Auth::Api::Roles, type: :controller do
+RSpec.describe Roles, type: :controller do
   context 'GET #index' do
     let(:roles) { build_stubbed_list(:role, 5) }
 
@@ -70,7 +70,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
       allow(Role).to receive(:create).with(params).and_return(stubbed)
 
-      post '/roles', role: params
+      post '/roles', params.to_json, 'CONTENT_TYPE' => 'application/json'
 
       payload = parsed_body
       roles_attr.each do |key|
@@ -82,15 +82,16 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
   context 'PUT #update' do
     let(:role) { build_stubbed(:role) }
-    let(:params) { attributes_for(:role) }
+    let(:params) { attributes_for(:role).stringify_keys }
 
     it 'updated role info' do
-      allow(Role).to receive_message_chain(:find, :update).with(role.id).with(params) do
+      allow(Role).to receive(:find).with(role.id) { role }
+      allow(role).to receive(:update).with(params) do
         role.assign_attributes(params)
         role
       end
 
-      put "/roles/#{role.id}", role: params
+      put "/roles/#{role.id}", params.to_json, 'CONTENT_TYPE' => 'application/json'
 
       payload = parsed_body
 
@@ -102,9 +103,10 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      allow(Role).to receive_message_chain(:find, :update).with('xx').with(params) { nil }
+      allow(Role).to receive(:find).with('xx') { role }
+      allow(role).to receive(:update).with(params.stringify_keys) { nil }
 
-      put '/roles/xx', role: params
+      put '/roles/xx', params.to_json, 'CONTENT_TYPE' => 'application/json'
 
       payload = parsed_body
 

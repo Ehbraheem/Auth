@@ -18,7 +18,7 @@ module Auth
         end
 
         get '/:id' do
-          render @role
+          render @role if @role
         end
 
         post '/' do
@@ -28,7 +28,7 @@ module Auth
         end
 
         put '/:id' do
-          render @role if @role.update payload
+          render(@role) if @role.update(payload)
         end
 
         delete '/:id' do

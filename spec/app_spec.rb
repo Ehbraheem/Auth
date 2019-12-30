@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Auth Api' do
+RSpec.describe Auth::App do
   before(:each) { get '/' }
 
   it 'successfully pings app\'s root' do

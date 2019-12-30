@@ -3,12 +3,15 @@
 ENV['RACK_ENV'] = 'test'
 
 require_relative File.expand_path '../config/environment', __dir__
-require_relative File.expand_path '../app', __dir__
+require_relative File.expand_path '../auth', __dir__
 require_relative File.expand_path 'support/database_cleaners', __dir__
 
 ENV['RACK_ENV'] = 'test'
 
 Coveralls.wear!
+
+Roles = Auth::App::Endpoint::Roles
+Role = Auth::App::Model::Role
 
 module RSpecMixin
   include Rack::Test::Methods
@@ -19,7 +22,7 @@ module RSpecMixin
 end
 
 def parsed_body
-  JSON.parse last_response.body
+  JSON.parse(last_response.body) unless last_response.body.empty?
 end
 
 # Load all factories

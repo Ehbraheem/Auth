@@ -7,6 +7,7 @@ module Auth
     module Render
       class Role < Base
         def self.render(data)
+          nil unless data
           # Not doing anything serious in the moment
           # data = data.map(&:to_hash) if data.respond_to?(:map) || data
           super
