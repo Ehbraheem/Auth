@@ -2,11 +2,11 @@
 
 module Auth
   class App
-    require_relative 'base'
-    require_relative 'endpoint'
-    require_relative 'render'
-    require_relative 'model'
-    require_relative 'parser'
+    require_relative 'app/base'
+    require_relative 'app/endpoint'
+    require_relative 'app/render'
+    require_relative 'app/model'
+    require_relative 'app/parser'
 
     attr_reader :app
 

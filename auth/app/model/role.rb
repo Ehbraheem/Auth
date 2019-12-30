@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../model'
+require_relative 'base'
 
 module Auth
   class App
