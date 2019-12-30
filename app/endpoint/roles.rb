@@ -6,12 +6,14 @@ module Auth
   class App
     class Endpoint
       class Roles < Endpoint
+        set :permitted_params, %w[name description parent]
+
         before(%r{/\b(?=([-_a-z0-9]*)\b)\1}) do |id|
           @role = role(id)
         end
 
         get '/' do
-          @roles = Auth::App::Model::Role.all
+          @roles = roles
           render @roles
         end
 
@@ -20,12 +22,13 @@ module Auth
         end
 
         post '/' do
-          Auth::App::Model::Role.create(params['role']).to_json
+          @role = build_role
+          @role.save
+          render @role
         end
 
         put '/:id' do
           render @role if @role.update payload
-          # Auth::App::Model::Role.find(id).update(params['role']).to_json
         end
 
         delete '/:id' do
@@ -38,12 +41,16 @@ module Auth
           Auth::App::Model::Role.find(id)
         end
 
+        def build_role
+          Auth::App::Model::Role.new payload
+        end
+
         def render(data)
           Auth::App::Render::Role.render data
         end
 
-        def payload
-          JSON.parse request.body.read
+        def roles
+          Auth::App::Model::Role.all
         end
       end
     end
