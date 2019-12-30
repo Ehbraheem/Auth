@@ -3,7 +3,6 @@
 module Auth
   class App
     module Model
-
     end
   end
 end
