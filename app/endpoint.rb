@@ -12,7 +12,6 @@ module Auth
 
       def payload
         @body ||= Parser.load request.body.read
-        puts settings.permitted_params
         if settings.permitted_params?
           @body.slice(*settings.permitted_params)
         else

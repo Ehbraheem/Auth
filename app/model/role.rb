@@ -16,6 +16,7 @@ module Auth
 
         before_save do |_doc|
           self.parent = parent.id if parent?
+          self.uuid = SecureRandom.uuid if !uuid?
         end
 
         def to_hash

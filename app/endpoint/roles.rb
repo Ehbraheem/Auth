@@ -6,7 +6,7 @@ module Auth
   class App
     class Endpoint
       class Roles < Endpoint
-        set :permitted_params, %w[name description parent]
+        set :permitted_params, %w[name description parent uuid]
 
         before(%r{/\b(?=([-_a-z0-9]*)\b)\1}) do |id|
           @role = role(id)
