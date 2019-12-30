@@ -6,6 +6,7 @@ module Auth
     require_relative 'endpoint'
     require_relative 'render'
     require_relative 'model'
+    require_relative 'parser'
 
     attr_reader :app
 
