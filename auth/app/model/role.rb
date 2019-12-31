@@ -6,7 +6,6 @@ module Auth
   class App
     module Model
       class Role < Base
-        # Mongoid::QueryCache.enabled = true
         # store_in collection: name[/[^:]+$/].pluralize
 
         field :name, type: String
@@ -14,6 +13,8 @@ module Auth
         field :uuid, type: String
         field :parent, type: BSON::ObjectId
 
+        validates_presence_of :name, :description
+  
         before_save do |_doc|
           self.parent = parent.id if parent?
           self.uuid = SecureRandom.uuid unless uuid?
