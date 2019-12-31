@@ -28,11 +28,13 @@ module Auth
         end
 
         put '/:id' do
-          render(resource: @role, status: 204) if @role.update(payload)
+          # render(resource: @role, status: 204) if @role.update(payload)
+          render(resource: @role) if @role.update(payload)
         end
 
         delete '/:id' do
           @role.destroy
+          status 204
         end
 
         private
