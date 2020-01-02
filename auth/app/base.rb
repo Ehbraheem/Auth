@@ -9,10 +9,7 @@ module Auth
       end
 
       error Mongoid::Errors::DocumentNotFound do
-        payload = {
-          errors: { full_messages: ['NOT FOUND'] }
-        }
-        render resource: payload, status: 404
+        render resource: { error: 'NOT FOUND' }, status: 404
       end
 
       configure :development do
