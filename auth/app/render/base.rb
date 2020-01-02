@@ -9,7 +9,9 @@ module Auth
       class Base
         class << self
           def render(resource:, status: 200, headers: nil)
-            resource = resource.respond_to?(:map) ? resource.map(&:to_h) : resource.to_h
+            unless resource.is_a?(Hash)
+              resource = resource.respond_to?(:map) ? resource.map(&:to_h) : resource.to_h
+            end
             body = Parser.dump resource
 
             [status, headers, body]

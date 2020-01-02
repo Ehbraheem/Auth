@@ -14,7 +14,7 @@ module Auth
         field :parent, type: BSON::ObjectId
 
         validates_presence_of :name, :description
-  
+
         before_save do |_doc|
           self.parent = parent.id if parent?
           self.uuid = SecureRandom.uuid unless uuid?

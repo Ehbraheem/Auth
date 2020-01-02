@@ -12,12 +12,12 @@ module Auth
             include Mongoid::Timestamps
 
             Mongoid::QueryCache.enabled = true
-            
+
             store_in collection: name[/[^:]+$/].pluralize.downcase
-            
+
             field :active, type: Boolean, default: true
 
-            default_scope ->{ where(active: true) }
+            default_scope -> { where(active: true) }
           end
         end
       end

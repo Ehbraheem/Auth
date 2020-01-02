@@ -47,8 +47,10 @@ module Auth
           Auth::App::Model::Role.new payload
         end
 
-        def render(data)
-          Auth::App::Render::Role.render data
+        def render(resource:, status: 200, headers: nil)
+          Auth::App::Render::Role.render(
+            resource: resource, status: status, headers: headers
+          )
         end
 
         def roles
