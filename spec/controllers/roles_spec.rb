@@ -4,6 +4,13 @@ def roles_attr
   %i[name uuid description]
 end
 
+def check_error
+  payload = parsed_body
+
+  expect(payload).to have_key 'error'
+  expect(payload['error']).to eq 'NOT FOUND'
+end
+
 RSpec.describe Roles, type: :controller do
   context 'GET #index' do
     let(:roles) { build_stubbed_list(:role, 5) }
@@ -40,7 +47,9 @@ RSpec.describe Roles, type: :controller do
 
     before(:example) do
       allow(Role).to receive(:find).with(role.id).and_return(role)
-      allow(Role).to receive(:find).with('sdvsvsADGFsbCvs').and_return(nil)
+      allow(Role).to receive(:find).with('xx').and_raise(
+        Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
+      )
     end
 
     it 'success and renders role' do
@@ -55,11 +64,9 @@ RSpec.describe Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      get '/roles/sdvsvsADGFsbCvs'
+      get '/roles/xx'
 
-      payload = parsed_body
-
-      expect(payload).to be_nil
+      check_error
     end
   end
 
@@ -84,13 +91,18 @@ RSpec.describe Roles, type: :controller do
     let(:role) { build_stubbed(:role) }
     let(:params) { attributes_for(:role).stringify_keys }
 
-    it 'updated role info' do
+    before(:example) do
       allow(Role).to receive(:find).with(role.id) { role }
       allow(role).to receive(:update).with(params) do
         role.assign_attributes(params)
         role
       end
+      allow(Role).to receive(:find).with('xx').and_raise(
+        Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
+      )
+    end
 
+    it 'updated role info' do
       put "/roles/#{role.id}", params.to_json, 'CONTENT_TYPE' => 'application/json'
 
       payload = parsed_body
@@ -103,39 +115,32 @@ RSpec.describe Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      allow(Role).to receive(:find).with('xx') { role }
-      allow(role).to receive(:update).with(params.stringify_keys) { nil }
-
       put '/roles/xx', params.to_json, 'CONTENT_TYPE' => 'application/json'
 
-      payload = parsed_body
-
-      expect(payload).to be_nil
+      check_error
     end
   end
 
   context 'DELETE #destroy' do
     let(:role) { build_stubbed(:role) }
 
-    it 'deleted role' do
+    before(:example) do
       allow(Role).to receive(:find).with(role.id) { role }
       allow(role).to receive(:destroy)
-
-      expect do
-        delete "/roles/#{role.id}"
-      end.to_not raise_error
-    end
-
-    it 'fails because no role is associated with id' do
       allow(Role).to receive(:find).with('xx').and_raise(
         Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
       )
+    end
 
+    it 'deleted role' do
+      delete "/roles/#{role.id}"
+      expect(last_response.status).to eq 204
+    end
+
+    it 'fails because no role is associated with id' do
       delete '/roles/xx'
-      puts parsed_body
-      expect do
-        delete '/roles/xx'
-      end.to raise_error Mongoid::Errors::DocumentNotFound
+
+      check_error
     end
   end
 end
