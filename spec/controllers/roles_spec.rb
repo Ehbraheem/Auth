@@ -131,6 +131,8 @@ RSpec.describe Roles, type: :controller do
         Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
       )
 
+      delete '/roles/xx'
+      puts parsed_body
       expect do
         delete '/roles/xx'
       end.to raise_error Mongoid::Errors::DocumentNotFound
