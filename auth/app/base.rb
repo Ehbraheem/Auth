@@ -12,6 +12,10 @@ module Auth
         render resource: { error: 'NOT FOUND' }, status: 404
       end
 
+      not_found do
+        render resource: { error: 'NOT FOUND' }, status: 404
+      end
+
       configure :development do
         set :show_exceptions, :after_handler
         enable :dump_errors
