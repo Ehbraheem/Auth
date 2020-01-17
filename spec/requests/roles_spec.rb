@@ -1,0 +1,47 @@
+
+def roles_attr
+  %i[name uuid description]
+end
+
+RSpec.describe Roles, type: :request do
+  
+  context 'caller request all Roles' do
+    
+    let!(:resources) { create_list :role, 5 }
+    let(:payload) { parsed_body }
+
+    before(:example) { 
+      get '/roles'
+    }
+
+    it 'success with appropriate content type' do
+      expect(last_response.content_type).to eq 'application/json'
+    end
+
+    it 'success with appropriate status code' do
+      expect(last_response.status).to be 200
+    end
+
+    it 'returns all Roles in the DB' do
+      expect(payload.count).to eq resources.count
+
+      expect(payload.map { |f| f['name'] }).to eq(roles.map { |f| f[:name] })
+      roles_attr.each do |attr|
+        expect(payload.map { |e| e[attr.to_s] }).to match_array(resources.map { |e| e[attr] })
+      end
+    end
+
+    it 'returns exact Roles that are in the DB' do
+      expect(payload.map { |f| f['name'] }).to eq(resources.map { |f| f[:name] })
+      roles_attr.each do |attr|
+        expect(payload.map { |e| e[attr.to_s] }).to match_array(resources.map { |e| e[attr] })
+      end
+    end
+  end
+
+  context 'caller request all Roles when no Role in the system' do
+    it 'success with appropriate header'
+    it 'success with appropriate status code'
+    it 'returns all Roles in the DB'
+  end
+end
