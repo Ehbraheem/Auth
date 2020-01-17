@@ -59,4 +59,28 @@ RSpec.describe Roles, type: :request do
       end
     end
   end
+
+  context 'specific role' do
+    let(:role) { create :role }
+
+    let(:payload) { parsed_body }
+
+    it 'returns Role when given correct ID' do
+      get "/roles/#{role.id}"
+
+      expect(last_response.status).to be 200
+
+      expect(payload).to_not be_empty
+      roles_attr.each do |key|
+        expect(payload).to have_key key.to_s
+        expect(payload[key.to_s]).to eq role[key]
+      end
+    end
+    it 'returns not found when given incorrect ID' do
+      get '/roles/5553223'
+
+      expect(last_response.status).to be 404
+      check_error
+    end
+  end
 end
