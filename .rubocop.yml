@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'bin/**/*'
+    - 'spec/**/*'
 
 Naming/FileName:
   Enabled: false
