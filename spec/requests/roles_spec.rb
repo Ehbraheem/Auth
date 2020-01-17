@@ -39,8 +39,22 @@ RSpec.describe Roles, type: :request do
   end
 
   context 'caller request all Roles when no Role in the system' do
-    it 'success with appropriate header'
-    it 'success with appropriate status code'
-    it 'returns all Roles in the DB'
+    let(:payload) { parsed_body }
+
+    before(:example) do
+      get '/roles'
+    end
+
+    it 'success with appropriate content type' do
+      expect(last_response.content_type).to eq 'application/json'
+    end
+
+    it 'success with appropriate status code' do
+      expect(last_response.status).to be 200
+    end
+
+    it 'returns empty array when no Roles in the DB' do
+      expect(payload).to be_empty
+    end
   end
 end
