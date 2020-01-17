@@ -4,13 +4,6 @@ def roles_attr
   %i[name uuid description]
 end
 
-def check_error
-  payload = parsed_body
-
-  expect(payload).to have_key 'error'
-  expect(payload['error']).to eq 'NOT FOUND'
-end
-
 RSpec.describe Roles, type: :controller do
   context 'GET #index' do
     let(:roles) { build_stubbed_list(:role, 5) }

@@ -25,6 +25,12 @@ def parsed_body
   JSON.parse(last_response.body) unless last_response.body.empty?
 end
 
+def check_error
+  payload = parsed_body
+  expect(payload).to have_key 'error'
+  expect(payload['error']).to eq 'NOT FOUND'
+end
+
 # Load all factories
 FactoryBot.reload
 
