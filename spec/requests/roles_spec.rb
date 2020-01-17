@@ -1,18 +1,17 @@
+# frozen_string_literal: true
 
 def roles_attr
   %i[name uuid description]
 end
 
 RSpec.describe Roles, type: :request do
-  
   context 'caller request all Roles' do
-    
     let!(:resources) { create_list :role, 5 }
     let(:payload) { parsed_body }
 
-    before(:example) { 
+    before(:example) do
       get '/roles'
-    }
+    end
 
     it 'success with appropriate content type' do
       expect(last_response.content_type).to eq 'application/json'
@@ -25,7 +24,7 @@ RSpec.describe Roles, type: :request do
     it 'returns all Roles in the DB' do
       expect(payload.count).to eq resources.count
 
-      expect(payload.map { |f| f['name'] }).to eq(roles.map { |f| f[:name] })
+      expect(payload.map { |f| f['name'] }).to eq(resources.map { |f| f[:name] })
       roles_attr.each do |attr|
         expect(payload.map { |e| e[attr.to_s] }).to match_array(resources.map { |e| e[attr] })
       end

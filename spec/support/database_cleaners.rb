@@ -2,10 +2,9 @@
 
 require 'database_cleaner'
 
-shared_context 'db_cleanup' do |ar_strategy = :truncation|
+shared_context 'db_cleanup' do |strategy = :truncation|
   before(:all) do
-    DatabaseCleaner[:mongoid].strategy = :truncation
-    DatabaseCleaner[:active_record].strategy = ar_strategy
+    DatabaseCleaner[:mongoid].strategy = strategy
     DatabaseCleaner.clean_with(:truncation)
   end
 
@@ -24,7 +23,7 @@ shared_context 'db_scope' do
   end
 end
 
-shared_context 'db_cleanup_each' do |ar_strategy = :truncation|
-  include_context 'db_cleanup', ar_strategy
+shared_context 'db_cleanup_each' do |strategy = :truncation|
+  include_context 'db_cleanup', strategy
   include_context 'db_scope'
 end
