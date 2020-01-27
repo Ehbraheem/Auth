@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 def roles_attr
-  %i[name uuid description parent]
+  %i[name uuid description]
 end
 
-RSpec.describe Auth::Api::Roles, type: :controller do
+RSpec.describe Roles, type: :controller do
   context 'GET #index' do
     let(:roles) { build_stubbed_list(:role, 5) }
 
@@ -40,7 +40,9 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
     before(:example) do
       allow(Role).to receive(:find).with(role.id).and_return(role)
-      allow(Role).to receive(:find).with('sdvsvsADGFsbCvs').and_return(nil)
+      allow(Role).to receive(:find).with('xx').and_raise(
+        Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
+      )
     end
 
     it 'success and renders role' do
@@ -55,11 +57,9 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      get '/roles/sdvsvsADGFsbCvs'
+      get '/roles/xx'
 
-      payload = parsed_body
-
-      expect(payload).to be_nil
+      check_error
     end
   end
 
@@ -70,7 +70,7 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
       allow(Role).to receive(:create).with(params).and_return(stubbed)
 
-      post '/roles', role: params
+      post '/roles', params.to_json, 'CONTENT_TYPE' => 'application/json'
 
       payload = parsed_body
       roles_attr.each do |key|
@@ -82,15 +82,21 @@ RSpec.describe Auth::Api::Roles, type: :controller do
 
   context 'PUT #update' do
     let(:role) { build_stubbed(:role) }
-    let(:params) { attributes_for(:role) }
+    let(:params) { attributes_for(:role).stringify_keys }
 
-    it 'updated role info' do
-      allow(Role).to receive_message_chain(:find, :update).with(role.id).with(params) do
+    before(:example) do
+      allow(Role).to receive(:find).with(role.id) { role }
+      allow(role).to receive(:update).with(params) do
         role.assign_attributes(params)
         role
       end
+      allow(Role).to receive(:find).with('xx').and_raise(
+        Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
+      )
+    end
 
-      put "/roles/#{role.id}", role: params
+    it 'updated role info' do
+      put "/roles/#{role.id}", params.to_json, 'CONTENT_TYPE' => 'application/json'
 
       payload = parsed_body
 
@@ -102,36 +108,32 @@ RSpec.describe Auth::Api::Roles, type: :controller do
     end
 
     it 'fails because no role is associated with id' do
-      allow(Role).to receive_message_chain(:find, :update).with('xx').with(params) { nil }
+      put '/roles/xx', params.to_json, 'CONTENT_TYPE' => 'application/json'
 
-      put '/roles/xx', role: params
-
-      payload = parsed_body
-
-      expect(payload).to be_nil
+      check_error
     end
   end
 
   context 'DELETE #destroy' do
     let(:role) { build_stubbed(:role) }
 
-    it 'deleted role' do
+    before(:example) do
       allow(Role).to receive(:find).with(role.id) { role }
       allow(role).to receive(:destroy)
-
-      expect do
-        delete "/roles/#{role.id}"
-      end.to_not raise_error
-    end
-
-    it 'fails because no role is associated with id' do
       allow(Role).to receive(:find).with('xx').and_raise(
         Mongoid::Errors::DocumentNotFound.new(Role, 'xx')
       )
+    end
 
-      expect do
-        delete '/roles/xx'
-      end.to raise_error Mongoid::Errors::DocumentNotFound
+    it 'deleted role' do
+      delete "/roles/#{role.id}"
+      expect(last_response.status).to eq 204
+    end
+
+    it 'fails because no role is associated with id' do
+      delete '/roles/xx'
+
+      check_error
     end
   end
 end

@@ -5,11 +5,12 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'bin/**/*'
+    - 'spec/**/*'
 
 Naming/FileName:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 90
   IgnoredPatterns: ['(\A|\s)#']
 
@@ -17,4 +18,6 @@ Metrics/LineLength:
 Metrics/BlockLength:
   Enabled: false
   # Max: 90
-  
+
+Style/Documentation:
+  Enabled: false
