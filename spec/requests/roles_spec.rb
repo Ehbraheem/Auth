@@ -108,6 +108,16 @@ RSpec.describe Roles, type: :request do
       expect(payload).to have_key 'uuid'
       expect(payload['uuid']).to match UUID_REGEX
     end
-    it 'cannot create Role'
+
+    it 'cannot create Role' do
+      bad_param = param.merge name: nil
+
+      post '/roles', bad_param.to_json, 'CONTENT_TYPE' => 'application/json'
+
+      expect(last_response.status).to be 401
+
+      expect(payload).to have_key 'name'
+      expect(payload['name']).to include /can't be blank/
+    end
   end
 end
