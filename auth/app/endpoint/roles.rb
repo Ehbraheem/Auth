@@ -32,7 +32,7 @@ module Auth
 
         put '/:id' do
           if @role.update(payload)
-            render resource: @role, status: 204
+            render resource: @role, status: 200
           else
             render resource: @role.errors.messages, status: 401
           end
