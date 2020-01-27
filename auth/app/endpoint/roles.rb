@@ -23,13 +23,19 @@ module Auth
 
         post '/' do
           @role = build_role
-          @role.save
-          render resource: @role, status: 201
+          if @role.save
+            render resource: @role, status: 201
+          else
+            render resource: @role.errors.messages, status: 401
+          end
         end
 
         put '/:id' do
-          # render(resource: @role, status: 204) if @role.update(payload)
-          render(resource: @role) if @role.update(payload)
+          if @role.update(payload)
+            render resource: @role, status: 204
+          else
+            render resource: @role.errors.messages, status: 401
+          end
         end
 
         delete '/:id' do
