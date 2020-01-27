@@ -4,6 +4,14 @@ def roles_attr
   %i[name uuid description]
 end
 
+def check_success # payload:, resource:
+  roles_attr.each do |attr|
+    yield(attr) if block_given?
+  end
+end
+
+UUID_REGEX = /\b(?=([0-9A-F]{8})\b)\1-(?=([0-9A-F]{4}))\2-(?=(4[0-9A-F]{3}))\3-(?=([89AB][0-9A-F]{3}))\4-(?=([0-9A-F]{12}))\5\b/i.freeze
+
 RSpec.describe Roles, type: :request do
   context 'caller request all Roles' do
     context 'roles in DB' do
@@ -82,5 +90,24 @@ RSpec.describe Roles, type: :request do
       expect(last_response.status).to be 404
       check_error
     end
+  end
+
+  context 'create a new Role' do
+    let(:param) { attributes_for :role }
+    let(:payload) { parsed_body }
+
+    it 'can create Role' do
+      post '/roles', param.to_json, 'CONTENT_TYPE' => 'application/json'
+
+      expect(last_response.status).to be 201
+
+      check_success do |key|
+        expect(payload).to have_key key.to_s
+        expect(payload[key.to_s]).to eq param[key]
+      end
+      expect(payload).to have_key 'uuid'
+      expect(payload['uuid']).to match UUID_REGEX
+    end
+    it 'cannot create Role'
   end
 end
